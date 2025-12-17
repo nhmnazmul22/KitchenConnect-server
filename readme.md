@@ -247,3 +247,11 @@ npm run dev
 
 - `GET /role-requests` → Get all role upgrade requests
 - `PATCH /role-requests/:requestId` → Approve/reject role upgrade request
+
+## Conclusion
+
+Built by **Nhm Nazmul** using Node.js, Express, MongoDB, and JWT, the project focuses on security, clean code, and easy growth.
+
+Future plans: Add notifications, more payment methods, discounts, and more+.
+
+Thanks for checking it out! Give start on my project if you love it.
