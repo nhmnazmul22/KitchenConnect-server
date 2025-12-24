@@ -5,11 +5,20 @@ import { createError, handleQuery } from "../../lib/helper.js";
 
 export const getMealsService = async (req) => {
   const mealsColl = await collections.meals();
-  const result = await handleQuery(req, mealsColl, ["foodName", "ingredients"]);
+  const result = await handleQuery(req, mealsColl, [
+    "foodName",
+    "chefName",
+    "ingredients",
+  ]);
   if (result.length === 0) {
     throw createError("Meals Not found", 404);
   }
-  return result;
+
+  const total = await mealsColl.count();
+  return {
+    meals: result,
+    total,
+  };
 };
 
 export const getChefMealsService = async (req) => {
