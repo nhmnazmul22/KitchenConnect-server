@@ -49,6 +49,13 @@ routes.get("/meals/:mealId", VerifyToken, mealController.getMealDetails);
 // Order routes
 routes.get("/orders/:orderId", VerifyToken, orderController.getOrderDetails);
 
+// Reviews routes
+routes.get(
+  "/reviewsByFoodId/:mealId",
+  VerifyToken,
+  reviewController.getReviewsByFoodId
+);
+
 // Role Request routes
 routes.post(
   "/role-requests",
@@ -64,15 +71,9 @@ routes.get(
   platformStatisticsController.getPlatformStatistics
 );
 
-// ================== User Routes ==================
+// ================== Reviews Routes ==================
 // Reviews routes
 routes.get("/reviews", VerifyToken, VerifyIsUser, reviewController.getReviews);
-routes.get(
-  "/reviewsByFoodId/:mealId",
-  VerifyToken,
-  VerifyIsUser,
-  reviewController.getReviewsByFoodId
-);
 routes.get(
   "/reviews/:reviewId",
   VerifyToken,
