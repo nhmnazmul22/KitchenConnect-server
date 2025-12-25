@@ -4,11 +4,10 @@ import { collections } from "../../config/db.js";
 export const getToken = async (req, res) => {
   try {
     const usersColl = await collections.users();
-    const token = await TokenServices.generateToken(req, res, usersColl);
+    const isGenerateToken = await TokenServices.generateToken(req, res, usersColl);
     return res.status(200).json({
-      success: true,
+      success: isGenerateToken,
       message: "Token generate successful",
-      token: token,
     });
   } catch (err) {
     return res.status(err?.statusCode || 500).json({

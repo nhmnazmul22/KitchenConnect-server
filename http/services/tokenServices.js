@@ -4,7 +4,7 @@ export const generateToken = async (req, res, collection) => {
   const { userEmail } = req.params;
   if (!userEmail) {
     return res.status(404).json({
-      success: true,
+      success: false,
       message: "User Email not found",
       data: null,
     });
@@ -14,7 +14,7 @@ export const generateToken = async (req, res, collection) => {
 
   if (!userInfo) {
     return res.status(404).json({
-      success: true,
+      success: false,
       message: "User not found",
       data: null,
     });
@@ -38,5 +38,5 @@ export const generateToken = async (req, res, collection) => {
     maxAge: 7 * 24 * 60 * 60 * 1000,
   });
 
-  return token;
+  return true;
 };

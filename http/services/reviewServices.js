@@ -139,27 +139,24 @@ export const deleteReviewService = async (req) => {
   if (!existReview) {
     throw createError("Review not found", 404);
   }
-  const result = await reviewsColl.deleteOne(query);
 
   // update the food rating
-  if (result.deletedCount) {
-    const [stats] = await reviewsColl
-      .aggregate([
-        { $match: { mealId: existReview.mealId } },
-        {
-          $group: {
-            _id: "$mealId",
-            avgRating: { $avg: "$rating" },
-          },
+  const [stats] = await reviewsColl
+    .aggregate([
+      { $match: { mealId: existReview.mealId } },
+      {
+        $group: {
+          _id: "$mealId",
+          avgRating: { $avg: "$rating" },
         },
-      ])
-      .toArray();
+      },
+    ])
+    .toArray();
 
-    if (!stats) {
-      throw createError("Meal Id invalid", 422);
-    }
-    await updateMealRating(existReview.mealId, stats.avgRating);
+  if (!stats) {
+    throw createError("Meal Id invalid", 422);
   }
-
+  await updateMealRating(existReview.mealId, stats.avgRating);
+  const result = await reviewsColl.deleteOne(query);
   return result;
 };
