@@ -11,7 +11,12 @@ export const getRoleRequests = async (req) => {
   if (result.length === 0) {
     throw createError("Role Requests Not found", 404);
   }
-  return result;
+
+  const total = await roleRequestsColl.count();
+  return {
+    requests: result,
+    total,
+  };
 };
 
 export const createRoleRequestService = async (req) => {
@@ -63,6 +68,7 @@ export const updateRoleRequestService = async (req) => {
 
   if (result && body.requestStatus === "approved") {
     const usersColl = await collections.users();
+    console.log(existRequest);
     const query = { email: existRequest.userEmail };
     const updatedDoc = {
       role: existRequest.requestType,

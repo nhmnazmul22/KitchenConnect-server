@@ -189,7 +189,7 @@ routes.get(
   VerifyIsAdmin,
   roleRequestController.getRoleRequests
 );
-routes.patch(
+routes.put(
   "/role-requests/:requestId",
   VerifyToken,
   VerifyIsAdmin,

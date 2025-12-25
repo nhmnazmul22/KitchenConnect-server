@@ -9,7 +9,11 @@ export const getUsers = async (req) => {
   if (result.length === 0) {
     throw createError("Users Not found", 404);
   }
-  return result;
+  const total = await usersColl.count();
+  return {
+    users: result,
+    total,
+  };
 };
 
 export const createUserService = async (req) => {
@@ -84,7 +88,7 @@ export const updateProfileService = async (req) => {
   const body = req.body;
   const authInfo = req.headers.userInfo;
   const usersColl = await collections.users();
-  
+
   if (body.role || body.status || body.chefId) {
     throw createError("Unprocessable Entity", 422);
   }
