@@ -36,7 +36,11 @@ export const getChefMealsService = async (req) => {
   if (result.length === 0) {
     throw createError("Meals Not found", 404);
   }
-  return result;
+
+  return {
+    meals: result,
+    total: result.length,
+  };
 };
 
 export const getMealDetails = async (req) => {
@@ -64,12 +68,6 @@ export const createMealService = async (req) => {
       "Food Name, food image, price, delivery time, delivery area is required",
       422
     );
-  }
-
-  const existFood = await mealsColl.findOne({ foodName: body.foodName });
-
-  if (existFood) {
-    throw createError("Already have a food on this name", 422);
   }
 
   const usersColl = await collections.users();
@@ -101,7 +99,7 @@ export const updateMealService = async (req) => {
   const mealsColl = await collections.meals();
 
   const query = { _id: new ObjectId(mealId) };
-  const existFood = await collection.findOne(query);
+  const existFood = await mealsColl.findOne(query);
 
   if (!existFood) {
     throw createError("Meal not found", 404);

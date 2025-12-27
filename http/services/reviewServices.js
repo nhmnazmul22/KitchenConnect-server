@@ -15,7 +15,10 @@ export const getReviewsService = async (req) => {
   if (result.length === 0) {
     throw createError("Reviews Not found", 404);
   }
-  return result;
+  return {
+    reviews: result,
+    total: result.length,
+  };
 };
 
 export const getReviewsByFoodIdService = async (req) => {

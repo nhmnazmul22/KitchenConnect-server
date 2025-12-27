@@ -6,16 +6,21 @@ import { createError } from "../../lib/helper.js";
 export const getFavoriteMealsService = async (req) => {
   const authInfo = req.headers.userInfo;
   const favoritesColl = await collections.favorites();
-  const cursor = favoritesColl
-    .find({ userEmail: authInfo.email })
-    .sort({ createdAt: -1 });
-
-  const result = await cursor.toArray();
-  await cursor.close();
+  const result = await handleQuery(
+    req,
+    favoritesColl,
+    ["foodName", "chefName", "ingredients"],
+    {
+      userEmail: authInfo.email,
+    }
+  );
   if (result.length === 0) {
     throw createError("Favorite meals not found", 404);
   }
-  return result;
+  return {
+    meals: result,
+    total: result.length,
+  };
 };
 
 export const getFavoriteMealDetails = async (req) => {

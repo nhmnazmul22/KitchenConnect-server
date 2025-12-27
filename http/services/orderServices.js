@@ -18,7 +18,11 @@ export const getOrdersService = async (req) => {
   if (result.length === 0) {
     throw createError("Orders Not found", 404);
   }
-  return result;
+  const total = await result.length;
+  return {
+    orders: result,
+    total,
+  };
 };
 
 export const getMyOrdersService = async (req) => {
@@ -36,7 +40,10 @@ export const getMyOrdersService = async (req) => {
   if (result.length === 0) {
     throw createError("Orders Not found", 404);
   }
-  return result;
+  return {
+    orders: result,
+    total: result.length,
+  };
 };
 
 export const getOrderDetails = async (req) => {
