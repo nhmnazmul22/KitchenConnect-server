@@ -1,13 +1,11 @@
 import { ObjectId } from "mongodb";
-import { createError } from "../../lib/helper.js";
+import { createError, handleQuery } from "../../lib/helper.js";
 import { getDateTime } from "../../lib/utils.js";
 import { collections } from "../../config/db.js";
 
 export const getRoleRequests = async (req) => {
   const roleRequestsColl = await collections.roleRequests();
-  const cursor = roleRequestsColl.find({}).sort({ requestTime: -1 });
-  const result = await cursor.toArray();
-  await cursor.close();
+  const result = await handleQuery(req, roleRequestsColl);
   if (result.length === 0) {
     throw createError("Role Requests Not found", 404);
   }

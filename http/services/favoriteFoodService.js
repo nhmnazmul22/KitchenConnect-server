@@ -1,7 +1,7 @@
 import { ObjectId } from "mongodb";
 import { collections } from "../../config/db.js";
 import { getDateTime } from "../../lib/utils.js";
-import { createError } from "../../lib/helper.js";
+import { createError, handleQuery } from "../../lib/helper.js";
 
 export const getFavoriteMealsService = async (req) => {
   const authInfo = req.headers.userInfo;
@@ -9,7 +9,7 @@ export const getFavoriteMealsService = async (req) => {
   const result = await handleQuery(
     req,
     favoritesColl,
-    ["foodName", "chefName", "ingredients"],
+    ["foodName", "chefName"],
     {
       userEmail: authInfo.email,
     }
