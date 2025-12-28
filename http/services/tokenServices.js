@@ -36,6 +36,5 @@ export const generateToken = async (req, res, collection) => {
     maxAge: 7 * 24 * 60 * 60 * 1000,
   });
 
-  console.log(res);
   return true;
 };
