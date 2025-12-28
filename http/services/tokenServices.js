@@ -29,8 +29,6 @@ export const generateToken = async (req, res, collection) => {
   };
 
   const token = TokenEncoded(payload);
-
-  // Save token in HTTP Cookies
   res.cookie("token", token, {
     httpOnly: true,
     secure: process.env.NODE_ENV === "production",

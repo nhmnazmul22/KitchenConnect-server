@@ -14,6 +14,7 @@ import {
   VerifyIsChef,
   VerifyIsUser,
 } from "./middlewares/verifyRole.js";
+import { VerifyIsFraud } from "./middlewares/fraudVerify.js";
 
 const routes = express.Router();
 
@@ -26,14 +27,6 @@ routes.post("/users", userController.createUser);
 
 // Meals routes
 routes.get("/meals", mealController.getMeals);
-
-// Payment routes
-routes.post(
-  "/payment-checkout-session",
-  paymentController.createPaymentSession
-);
-routes.patch("/payment-success", paymentController.paymentSuccess);
-routes.patch("/payment-cancel", paymentController.paymentCancel);
 
 // ================== Public Routes with token ==================
 // Token Routes
@@ -70,6 +63,15 @@ routes.get(
   VerifyIsAdmin,
   platformStatisticsController.getPlatformStatistics
 );
+
+// Payment routes
+routes.post(
+  "/payment-checkout-session",
+  VerifyToken,
+  paymentController.createPaymentSession
+);
+routes.patch("/payment-success", VerifyToken, paymentController.paymentSuccess);
+routes.patch("/payment-cancel", VerifyToken, paymentController.paymentCancel);
 
 // ================== Reviews Routes ==================
 // Reviews routes
@@ -132,7 +134,13 @@ routes.get(
   VerifyIsUser,
   orderController.getMyOrders
 );
-routes.post("/orders", VerifyToken, VerifyIsUser, orderController.createOrder);
+routes.post(
+  "/orders",
+  VerifyToken,
+  VerifyIsUser,
+  VerifyIsFraud,
+  orderController.createOrder
+);
 routes.put(
   "/orders/:orderId",
   VerifyToken,
@@ -143,7 +151,13 @@ routes.put(
 // ================== Chef Routes ==================
 // Meals routes
 routes.get("/my-meals", VerifyToken, VerifyIsChef, mealController.getChefMeals);
-routes.post("/meals", VerifyToken, VerifyIsChef, mealController.createMeal);
+routes.post(
+  "/meals",
+  VerifyToken,
+  VerifyIsChef,
+  VerifyIsFraud,
+  mealController.createMeal
+);
 routes.put(
   "/meals/:mealId",
   VerifyToken,
